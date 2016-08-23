@@ -10,7 +10,7 @@ import (
 	"sync"
 )
 
-// New creates filebased configuration source
+// New creates file-based configuration source
 func New(fileNames []string, read func(string) ([]byte, error), build func([]byte) (cfg.Configurer, error)) *Configurer {
 	if read == nil {
 		read = ioutil.ReadFile
@@ -85,16 +85,16 @@ func (c *Configurer) Has(key string) bool {
 	return c.currentConfig.Has(key)
 }
 
-// UnmarshallKey writes configuration value from string key into interface target
-func (c *Configurer) UnmarshallKey(key string, target interface{}) error {
+// UnmarshalKey writes configuration value from string key into interface target
+func (c *Configurer) UnmarshalKey(key string, target interface{}) error {
 	if c.currentConfig == nil {
 		return errors.New("File source config not ready")
 	}
 
-	return c.currentConfig.UnmarshallKey(key, target)
+	return c.currentConfig.UnmarshalKey(key, target)
 }
 
-// KeyFunc return unmarshalling function for requested key
+// KeyFunc return Unmarshaling function for requested key
 func (c *Configurer) KeyFunc(key string) func(interface{}) error {
-	return cfg.ExtractUnmarshallFunc(c, key)
+	return cfg.ExtractUnmarshalFunc(c, key)
 }

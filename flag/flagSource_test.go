@@ -28,22 +28,22 @@ func TestFlagSource(t *testing.T) {
 	a.True(f.Has("port"))
 
 	b := false
-	a.NoError(f.UnmarshallKey("v", &b))
+	a.NoError(f.UnmarshalKey("v", &b))
 	a.True(b)
 
 	b = false
-	a.NoError(f.UnmarshallKey("q", &b))
+	a.NoError(f.UnmarshalKey("q", &b))
 	a.True(b)
 
 	b = false
-	a.NoError(f.UnmarshallKey("no-ansi", &b))
+	a.NoError(f.UnmarshalKey("no-ansi", &b))
 	a.True(b)
 
 	s := ""
-	a.NoError(f.UnmarshallKey("domain", &s))
+	a.NoError(f.UnmarshalKey("domain", &s))
 	a.Equal("local", s)
 
 	i := 0
-	a.NoError(f.UnmarshallKey("port", &i))
+	a.NoError(f.UnmarshalKey("port", &i))
 	a.Equal(33, i)
 }

@@ -27,20 +27,20 @@ func TestBytesSourceConfigurer(t *testing.T) {
 	a.False(c.Has("floatKEY"))
 
 	s := ""
-	a.NoError(c.UnmarshallKey("stringKey", &s))
+	a.NoError(c.UnmarshalKey("stringKey", &s))
 	a.Equal("some", s)
-	a.NoError(c.UnmarshallKey("stringKey2", &s))
+	a.NoError(c.UnmarshalKey("stringKey2", &s))
 	a.Equal("more", s)
 
 	i := 0
-	a.NoError(c.UnmarshallKey("intKey", &i))
+	a.NoError(c.UnmarshalKey("intKey", &i))
 	a.Equal(736, i)
 
 	b := false
-	a.NoError(c.UnmarshallKey("boolKey", &b))
+	a.NoError(c.UnmarshalKey("boolKey", &b))
 	a.True(b)
 
 	f := 0.0
-	a.NoError(c.UnmarshallKey("floatKey", &f))
+	a.NoError(c.UnmarshalKey("floatKey", &f))
 	a.Equal(0.323, f)
 }

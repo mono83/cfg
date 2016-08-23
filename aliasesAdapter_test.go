@@ -17,13 +17,13 @@ func TestConfigurerWithAliases(t *testing.T) {
 	c := NewConfigurationWithAliases(Map(ms))
 	a.True(c.Has("foo"))
 	a.False(c.Has("bar"))
-	a.NoError(c.UnmarshallKey("foo", &f))
-	a.Error(c.UnmarshallKey("bar", &f))
+	a.NoError(c.UnmarshalKey("foo", &f))
+	a.Error(c.UnmarshalKey("bar", &f))
 
 	c.Alias("bar", "foo")
 	a.True(c.Has("foo"))
 	a.True(c.Has("bar"))
-	a.NoError(c.UnmarshallKey("foo", &f))
-	a.NoError(c.UnmarshallKey("bar", &f))
+	a.NoError(c.UnmarshalKey("foo", &f))
+	a.NoError(c.UnmarshalKey("bar", &f))
 	a.Equal(0.231, f)
 }

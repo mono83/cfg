@@ -17,8 +17,8 @@ func TestNew(t *testing.T) {
 
 	i := 0
 	s := ""
-	a.NoError(c.UnmarshallKey("id", &i))
-	a.NoError(c.UnmarshallKey("name", &s))
+	a.NoError(c.UnmarshalKey("id", &i))
+	a.NoError(c.UnmarshalKey("name", &s))
 	a.Equal(3874, i)
 	a.Equal("Yahoo", s)
 	a.NoError(c.Reload())

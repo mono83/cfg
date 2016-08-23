@@ -11,8 +11,8 @@ func (m Map) Has(key string) bool {
 	return ok
 }
 
-// UnmarshallKey writes configuration value from string key into interface target
-func (m Map) UnmarshallKey(key string, target interface{}) error {
+// UnmarshalKey writes configuration value from string key into interface target
+func (m Map) UnmarshalKey(key string, target interface{}) error {
 	v, ok := m[key]
 	if !ok {
 		return ErrKeyMissing{Key: key}
@@ -21,7 +21,7 @@ func (m Map) UnmarshallKey(key string, target interface{}) error {
 	return reflect.CopyHelper(key, v, target)
 }
 
-// KeyFunc return unmarshalling function for requested key
+// KeyFunc return Unmarshaling function for requested key
 func (m Map) KeyFunc(key string) func(interface{}) error {
-	return ExtractUnmarshallFunc(m, key)
+	return ExtractUnmarshalFunc(m, key)
 }

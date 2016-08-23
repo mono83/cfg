@@ -29,8 +29,8 @@ func (c ConfigurerWithAliases) Has(key string) bool {
 	return ok && c.real.Has(v)
 }
 
-// UnmarshallKey writes configuration value from string key into interface target
-func (c ConfigurerWithAliases) UnmarshallKey(key string, target interface{}) error {
+// UnmarshalKey writes configuration value from string key into interface target
+func (c ConfigurerWithAliases) UnmarshalKey(key string, target interface{}) error {
 	if !c.real.Has(key) {
 		v, ok := c.aliases[key]
 		if !ok || !c.real.Has(v) {
@@ -40,10 +40,10 @@ func (c ConfigurerWithAliases) UnmarshallKey(key string, target interface{}) err
 		key = v
 	}
 
-	return c.real.UnmarshallKey(key, target)
+	return c.real.UnmarshalKey(key, target)
 }
 
-// KeyFunc return unmarshalling function for requested key
+// KeyFunc return Unmarshaling function for requested key
 func (c ConfigurerWithAliases) KeyFunc(key string) func(interface{}) error {
-	return ExtractUnmarshallFunc(c, key)
+	return ExtractUnmarshalFunc(c, key)
 }

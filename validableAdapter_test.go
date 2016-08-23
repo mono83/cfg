@@ -33,8 +33,8 @@ func TestValidableConfig(t *testing.T) {
 	a.True(c.Has("bar"))
 
 	v := validableEntry{}
-	a.NoError(c.UnmarshallKey("foo", &v))
+	a.NoError(c.UnmarshalKey("foo", &v))
 	a.Equal(5, v.id)
-	a.Error(c.UnmarshallKey("bar", &v))
+	a.Error(c.UnmarshalKey("bar", &v))
 	a.Equal(1, v.id)
 }

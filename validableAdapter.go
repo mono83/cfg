@@ -13,8 +13,8 @@ func NewValidableConfig(source Configurer) Configurer {
 	return validableAdapter{Configurer: source}
 }
 
-func (v validableAdapter) UnmarshallKey(key string, target interface{}) error {
-	err := v.Configurer.UnmarshallKey(key, target)
+func (v validableAdapter) UnmarshalKey(key string, target interface{}) error {
+	err := v.Configurer.UnmarshalKey(key, target)
 	if err == nil && target != nil {
 		if vt, ok := target.(Validable); ok {
 			err = vt.Validate()
@@ -28,5 +28,5 @@ func (v validableAdapter) UnmarshallKey(key string, target interface{}) error {
 }
 
 func (v validableAdapter) KeyFunc(key string) func(interface{}) error {
-	return ExtractUnmarshallFunc(v, key)
+	return ExtractUnmarshalFunc(v, key)
 }

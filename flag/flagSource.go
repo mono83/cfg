@@ -68,7 +68,7 @@ func (f *flagSource) Has(key string) bool {
 	return ok
 }
 
-func (f *flagSource) UnmarshallKey(key string, target interface{}) error {
+func (f *flagSource) UnmarshalKey(key string, target interface{}) error {
 	if f.values == nil {
 		err := f.load()
 		if err != nil {
@@ -85,5 +85,5 @@ func (f *flagSource) UnmarshallKey(key string, target interface{}) error {
 }
 
 func (f *flagSource) KeyFunc(key string) func(interface{}) error {
-	return cfg.ExtractUnmarshallFunc(f, key)
+	return cfg.ExtractUnmarshalFunc(f, key)
 }

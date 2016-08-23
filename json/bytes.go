@@ -43,7 +43,7 @@ func (b bytesSourceConfigurer) Has(key string) bool {
 	return ok
 }
 
-func (b bytesSourceConfigurer) UnmarshallKey(key string, target interface{}) error {
+func (b bytesSourceConfigurer) UnmarshalKey(key string, target interface{}) error {
 	v, ok := b[key]
 	if !ok {
 		return cfg.ErrKeyMissing{Key: key}
@@ -53,5 +53,5 @@ func (b bytesSourceConfigurer) UnmarshallKey(key string, target interface{}) err
 }
 
 func (b bytesSourceConfigurer) KeyFunc(key string) func(interface{}) error {
-	return cfg.ExtractUnmarshallFunc(b, key)
+	return cfg.ExtractUnmarshalFunc(b, key)
 }
