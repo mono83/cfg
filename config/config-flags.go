@@ -43,7 +43,7 @@ func (c *Config) EnablePFlags() {
 // EnableCustomPFlags registers configuration source from
 // provided improved PFlagSet
 func EnableCustomPFlags(f *gopflag.FlagSet) {
-	def.EnableCustomFlags(f)
+	def.EnableCustomPFlags(f)
 }
 
 // EnableCustomPFlags registers configuration source from
