@@ -3,6 +3,7 @@ package reflect
 import (
 	"fmt"
 	"reflect"
+	"strconv"
 	"strings"
 )
 
@@ -79,6 +80,32 @@ func smartStringCopy(from, to interface{}) (bool, error) {
 			"Unable to map string into boolean. Value \"%s\" is invalid",
 			sv,
 		)
+	}
+
+	if typeOfTo == reflect.Int {
+		i, err := strconv.Atoi(sv)
+		if err != nil {
+			return false, fmt.Errorf(
+				"Unable to map string to int. %s",
+				err.Error(),
+			)
+		}
+
+		valPoint.SetInt(int64(i))
+		return true, nil
+	}
+
+	if typeOfTo == reflect.Int64 {
+		i, err := strconv.ParseInt(sv, 10, 64)
+		if err != nil {
+			return false, fmt.Errorf(
+				"Unable to map string to int64. %s",
+				err.Error(),
+			)
+		}
+
+		valPoint.SetInt(i)
+		return true, nil
 	}
 
 	return false, nil
