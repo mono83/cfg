@@ -2,7 +2,6 @@ package flag
 
 import (
 	"flag"
-	"fmt"
 	"github.com/mono83/cfg"
 	"github.com/mono83/cfg/reflect"
 	"os"
@@ -39,7 +38,6 @@ func (f *flagSource) load() error {
 	if !f.set.Parsed() {
 		err := f.set.Parse(f.args)
 		if err != nil {
-			fmt.Println(err)
 			return err
 		}
 	}
