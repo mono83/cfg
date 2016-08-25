@@ -5,7 +5,7 @@ import (
 	"sync"
 )
 
-// def contains defaul static instance of Config struct
+// def contains default static instance of Config struct
 var def = New()
 
 // New creates new Config instance
@@ -23,6 +23,29 @@ type Config struct {
 
 	cache cfg.Configurer
 	m     sync.Mutex
+}
+
+// AddFirst registers configuration source and adds it to the
+// beginning of configuration sources list, setting min priority
+func (c *Config) AddFirst(cc cfg.Configurer) {
+	if cc != nil {
+		if len(c.configs) == 0 {
+			c.configs = []cfg.Configurer{cc}
+		} else {
+			c.configs = append([]cfg.Configurer{cc}, c.configs...)
+		}
+	}
+
+	c.clear()
+}
+
+// AddLast registers configuration source and adds it to the
+// end of configuration sources list, setting max priority
+func (c *Config) AddLast(cc cfg.Configurer) {
+	if cc != nil {
+		c.configs = append(c.configs, cc)
+	}
+	c.clear()
 }
 
 // Alias method registers configuration key alias
@@ -61,7 +84,7 @@ func (c *Config) real() cfg.Configurer {
 	defer c.m.Unlock()
 
 	if c.cache == nil {
-		c.cache = cfg.ConfigurersList(c.configs)
+		c.cache = cfg.List(c.configs)
 		if len(c.aliases) > 0 {
 			ac := cfg.NewConfigurationWithAliases(c.cache)
 			for k, v := range c.aliases {

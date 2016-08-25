@@ -1,11 +1,13 @@
 package cfg
 
-// ConfigurersList represents slice of configurers and is configurer
+// List represents slice of configurers and is configurer
 // by itself
-type ConfigurersList []Configurer
+// Configurers in list are processed backwards, so last one
+// has maximum priority
+type List []Configurer
 
 // Has returns true if configurer has requested field
-func (c ConfigurersList) Has(key string) bool {
+func (c List) Has(key string) bool {
 	for _, e := range c {
 		if e.Has(key) {
 			return true
@@ -16,8 +18,9 @@ func (c ConfigurersList) Has(key string) bool {
 }
 
 // UnmarshalKey writes configuration value from string key into interface target
-func (c ConfigurersList) UnmarshalKey(key string, target interface{}) error {
-	for _, e := range c {
+func (c List) UnmarshalKey(key string, target interface{}) error {
+	for i := len(c) - 1; i >= 0; i-- {
+		e := c[i]
 		if e.Has(key) {
 			return e.UnmarshalKey(key, target)
 		}
@@ -27,6 +30,6 @@ func (c ConfigurersList) UnmarshalKey(key string, target interface{}) error {
 }
 
 // KeyFunc return Unmarshaling function for requested key
-func (c ConfigurersList) KeyFunc(key string) func(interface{}) error {
+func (c List) KeyFunc(key string) func(interface{}) error {
 	return ExtractUnmarshalFunc(c, key)
 }

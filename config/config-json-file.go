@@ -12,8 +12,7 @@ func JSONFile(names ...string) {
 
 // JSONFile registers configuration source read from JSON file
 func (c *Config) JSONFile(names ...string) {
-	c.configs = append(c.configs, file.New(names, nil, json.NewBytesSource))
-	c.clear()
+	c.AddLast(file.New(names, nil, json.NewBytesSource))
 }
 
 // JSONAutoFind registers configuration source read from required file

@@ -12,8 +12,7 @@ func YAMLFile(names ...string) {
 
 // YAMLFile registers configuration source read from YAML file
 func (c *Config) YAMLFile(names ...string) {
-	c.configs = append(c.configs, file.New(names, nil, yaml.NewBytesSource))
-	c.clear()
+	c.AddLast(file.New(names, nil, yaml.NewBytesSource))
 }
 
 // YAMLAutoFind registers configuration source read from required file

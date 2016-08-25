@@ -13,8 +13,7 @@ func EnableFlags() {
 
 // EnableFlags enables standard library flags reading
 func (c *Config) EnableFlags() {
-	c.configs = append(c.configs, flag.NewFlagSource())
-	c.clear()
+	c.AddLast(flag.NewFlagSource())
 }
 
 // EnableCustomFlags registers configuration source from
@@ -26,6 +25,5 @@ func EnableCustomFlags(f *goflag.FlagSet) {
 // EnableCustomFlags registers configuration source from
 // provided FlagSet
 func (c *Config) EnableCustomFlags(f *goflag.FlagSet) {
-	c.configs = append(c.configs, flag.NewCustomFlagSource(f, os.Args[1:]))
-	c.clear()
+	c.AddLast(flag.NewCustomFlagSource(f, os.Args[1:]))
 }
