@@ -20,9 +20,9 @@ func (c *Config) AutoFind(name, subfolderName string) error {
 	ext := filepath.Ext(name)
 	ext = strings.ToLower(ext)
 	switch ext {
-	case "yaml", "yml":
+	case ".yaml", ".yml":
 		c.YAMLAutoFind(name, subfolderName)
-	case "json":
+	case ".json":
 		c.JSONAutoFind(name, subfolderName)
 	case "":
 		return fmt.Errorf("File %s has no extension and it's type cannot be detemined", name)

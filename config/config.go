@@ -78,12 +78,22 @@ func (c *Config) clear() {
 	c.cache = nil
 }
 
+type reloader interface {
+	Reload() error
+}
+
 // real builds and returns configurere object
 func (c *Config) real() cfg.Configurer {
 	c.m.Lock()
 	defer c.m.Unlock()
 
 	if c.cache == nil {
+		for _, cc := range c.configs {
+			if rcc, ok := cc.(reloader); ok {
+				rcc.Reload()
+			}
+		}
+
 		c.cache = cfg.List(c.configs)
 		if len(c.aliases) > 0 {
 			ac := cfg.NewConfigurationWithAliases(c.cache)
