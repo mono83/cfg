@@ -27,6 +27,7 @@ lint: ## Code linting
 deps: ## Download required dependencies
 	go get gopkg.in/yaml.v2
 	go get github.com/stretchr/testify/assert
+	go get github.com/ogier/pflag
 
 travis: deps vet test
 
