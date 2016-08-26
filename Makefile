@@ -28,6 +28,7 @@ deps: ## Download required dependencies
 	go get gopkg.in/yaml.v2
 	go get github.com/stretchr/testify/assert
 	go get github.com/ogier/pflag
+	go get github.com/BurntSushi/toml
 
 travis: deps vet test
 

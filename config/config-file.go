@@ -22,6 +22,8 @@ func (c *Config) AutoFind(name, subfolderName string) error {
 	switch ext {
 	case ".yaml", ".yml":
 		c.YAMLAutoFind(name, subfolderName)
+	case ".toml":
+		c.TOMLAutoFind(name, subfolderName)
 	case ".json":
 		c.JSONAutoFind(name, subfolderName)
 	case "":
