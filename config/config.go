@@ -27,6 +27,12 @@ type Config struct {
 
 // AddFirst registers configuration source and adds it to the
 // beginning of configuration sources list, setting min priority
+func AddFirst(cc cfg.Configurer) {
+	def.AddFirst(cc)
+}
+
+// AddFirst registers configuration source and adds it to the
+// beginning of configuration sources list, setting min priority
 func (c *Config) AddFirst(cc cfg.Configurer) {
 	if cc != nil {
 		if len(c.configs) == 0 {
@@ -37,6 +43,12 @@ func (c *Config) AddFirst(cc cfg.Configurer) {
 	}
 
 	c.clear()
+}
+
+// AddLast registers configuration source and adds it to the
+// end of configuration sources list, setting max priority
+func AddLast(cc cfg.Configurer) {
+	def.AddLast(cc)
 }
 
 // AddLast registers configuration source and adds it to the
