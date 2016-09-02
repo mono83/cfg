@@ -12,6 +12,7 @@ func CommonFolders(filename string) []string {
 		filename,
 		getHomeFolder() + "/" + filename,
 		"/etc/" + filename,
+		"/usr/local/etc/" + filename,
 	}
 }
 
@@ -23,6 +24,7 @@ func CommonFoldersWithSubfolder(filename, subfolder string) []string {
 		subfolder + "/" + filename,
 		getHomeFolder() + "/" + subfolder + "/" + filename,
 		"/etc/" + subfolder + "/" + filename,
+		"/usr/local/etc/" + subfolder + "/" + filename,
 	}
 }
 
