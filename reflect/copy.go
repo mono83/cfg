@@ -36,7 +36,28 @@ func CopyHelper(key string, from, to interface{}) error {
 		return nil
 	}
 
+	// Interface receiver
+	ok, err = interfaceTargetCopy(from, to)
+	if err != nil {
+		return fmt.Errorf("Unable to read %s. %s", key, err.Error())
+	}
+	if ok {
+		return nil
+	}
+
 	return fmt.Errorf("Unable to copy value of type %T to %T for key \"%s\"", from, to, key)
+}
+
+var any = new(interface{})
+var anyType = reflect.TypeOf(any).Elem()
+
+func interfaceTargetCopy(from, to interface{}) (bool, error) {
+	if reflect.TypeOf(to).Elem() == anyType {
+		reflect.ValueOf(to).Elem().Set(reflect.ValueOf(from))
+		return true, nil
+	}
+
+	return false, nil
 }
 
 // simpleCopy copies values as-is if types are equal
