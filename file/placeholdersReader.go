@@ -22,7 +22,7 @@ func PlaceholdersReader(read func(string) ([]byte, error), configurer cfg.Config
 
 		// Got some data - searching and replacing placeholders
 		var outerError error
-		return placeholdersRegex.ReplaceAllFunc(data, func(b []byte) []byte {
+		bts := placeholdersRegex.ReplaceAllFunc(data, func(b []byte) []byte {
 			if outerError != nil {
 				return b
 			}
@@ -32,6 +32,7 @@ func PlaceholdersReader(read func(string) ([]byte, error), configurer cfg.Config
 			// Searching for key
 			if !configurer.Has(s) {
 				outerError = fmt.Errorf("Configuration has no data for placeholder %s", s)
+				return b
 			}
 
 			var target interface{}
@@ -41,6 +42,8 @@ func PlaceholdersReader(read func(string) ([]byte, error), configurer cfg.Config
 			}
 
 			return b
-		}), outerError
+		})
+
+		return bts, outerError
 	}
 }

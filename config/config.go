@@ -128,7 +128,11 @@ func (c *Config) real() cfg.Configurer {
 		for _, cc := range c.configs {
 			c.staging = cfg.List(inProgress)
 			if rcc, ok := cc.(reloader); ok {
-				rcc.Reload()
+				err := rcc.Reload()
+				if err != nil {
+					c.cache = cfg.ErrConfigurer(err)
+					return c.cache
+				}
 			}
 			inProgress = append(inProgress, cc)
 		}
