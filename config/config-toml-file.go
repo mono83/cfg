@@ -12,7 +12,7 @@ func TOMLFile(names ...string) {
 
 // TOMLFile registers configuration source read from TOML file
 func (c *Config) TOMLFile(names ...string) {
-	c.AddLast(file.New(names, nil, toml.NewBytesSource))
+	c.AddLast(file.New(names, c.fileReader, toml.NewBytesSource))
 }
 
 // TOMLAutoFind registers configuration source read from required file

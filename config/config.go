@@ -2,6 +2,8 @@ package config
 
 import (
 	"github.com/mono83/cfg"
+	"github.com/mono83/cfg/file"
+	"io/ioutil"
 	"sync"
 )
 
@@ -20,6 +22,9 @@ type Config struct {
 	configs        []cfg.Configurer
 	aliases        map[string]string
 	withValidation bool
+
+	fileReader func(string) ([]byte, error)
+	staging    cfg.Configurer
 
 	cache cfg.Configurer
 	m     sync.Mutex
@@ -71,15 +76,34 @@ func (c *Config) Alias(virtual, real string) {
 	c.clear()
 }
 
-// WithValidation enables config values validation
-func WithValidation() {
-	def.WithValidation()
+// EnableValidation enables config values validation
+func EnableValidation() {
+	def.EnableValidation()
 }
 
-// WithValidation enables config values validation
-func (c *Config) WithValidation() {
+// EnableValidation enables config values validation
+func (c *Config) EnableValidation() {
 	c.withValidation = true
 	c.clear()
+}
+
+// EnablePlaceholdersInFile enables placeholders parsing
+func EnablePlaceholdersInFile() {
+	def.EnablePlaceholdersInFile()
+}
+
+// EnablePlaceholdersInFile enables placeholders parsing
+func (c *Config) EnablePlaceholdersInFile() {
+	c.fileReader = func(name string) ([]byte, error) {
+		return file.PlaceholdersReader(
+			ioutil.ReadFile,
+			c.getStagingConfigurer(),
+		)(name)
+	}
+}
+
+func (c *Config) getStagingConfigurer() cfg.Configurer {
+	return c.staging
 }
 
 // clear drops config cache
@@ -94,16 +118,19 @@ type reloader interface {
 	Reload() error
 }
 
-// real builds and returns configurere object
+// real builds and returns configurer object
 func (c *Config) real() cfg.Configurer {
 	c.m.Lock()
 	defer c.m.Unlock()
 
 	if c.cache == nil {
+		inProgress := []cfg.Configurer{}
 		for _, cc := range c.configs {
+			c.staging = cfg.List(inProgress)
 			if rcc, ok := cc.(reloader); ok {
 				rcc.Reload()
 			}
+			inProgress = append(inProgress, cc)
 		}
 
 		c.cache = cfg.List(c.configs)
