@@ -17,3 +17,5 @@ func (e errConfigurer) UnmarshalKey(string, interface{}) error { return e }
 func (e errConfigurer) KeyFunc(string) func(interface{}) error {
 	return func(interface{}) error { return e }
 }
+
+func (e errConfigurer) Validate() error { return e }

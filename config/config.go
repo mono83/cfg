@@ -1,6 +1,7 @@
 package config
 
 import (
+	"errors"
 	"github.com/mono83/cfg"
 	"github.com/mono83/cfg/file"
 	"io/ioutil"
@@ -193,4 +194,32 @@ func KeyFunc(key string) func(interface{}) error {
 // KeyFunc return Unmarshaling function for requested key
 func (c *Config) KeyFunc(key string) func(interface{}) error {
 	return c.real().KeyFunc(key)
+}
+
+// Validate performs config validation
+func Validate() error {
+	return def.Validate()
+}
+
+// Validate performs config validation
+func (c *Config) Validate() error {
+	validable, ok := c.real().(cfg.Validable)
+	if ok {
+		return validable.Validate()
+	}
+
+	return errors.New("Unable to perform config validation")
+}
+
+// MustValidate validates config and panics on error
+func MustValidate() {
+	def.MustValidate()
+}
+
+// MustValidate validates config and panics on error
+func (c *Config) MustValidate() {
+	err := c.Validate()
+	if err != nil {
+		panic("Config validation failed: " + err.Error())
+	}
 }

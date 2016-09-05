@@ -1,6 +1,7 @@
 package cfg
 
 import (
+	"errors"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )
@@ -21,6 +22,8 @@ func TestList(t *testing.T) {
 
 	l := List([]Configurer{first, second})
 
+	a.NoError(l.Validate())
+
 	a.True(l.Has("foo"))
 	a.True(l.Has("bar"))
 	a.True(l.Has("baz"))
@@ -38,4 +41,16 @@ func TestList(t *testing.T) {
 	a.Equal(110, i)
 	a.NoError(l.UnmarshalKey("baz2", &i))
 	a.Equal(130, i)
+
+	err := errors.New("Marker error")
+	l = List([]Configurer{first, ErrConfigurer(err), second})
+	a.Error(l.Validate())
+	a.Equal(err.Error(), l.Validate().Error())
+
+	// Even validation failure of one of configurers allows to use others
+	a.True(l.Has("foo"))
+	a.True(l.Has("bar"))
+	a.True(l.Has("baz"))
+	a.True(l.Has("foo2"))
+	a.True(l.Has("baz2"))
 }

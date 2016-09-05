@@ -33,3 +33,16 @@ func (c List) UnmarshalKey(key string, target interface{}) error {
 func (c List) KeyFunc(key string) func(interface{}) error {
 	return ExtractUnmarshalFunc(c, key)
 }
+
+// Validate performs validation of all configs inside list
+func (c List) Validate() error {
+	for _, cc := range c {
+		if validable, ok := cc.(Validable); ok {
+			if err := validable.Validate(); err != nil {
+				return err
+			}
+		}
+	}
+
+	return nil
+}

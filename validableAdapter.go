@@ -30,3 +30,12 @@ func (v validableAdapter) UnmarshalKey(key string, target interface{}) error {
 func (v validableAdapter) KeyFunc(key string) func(interface{}) error {
 	return ExtractUnmarshalFunc(v, key)
 }
+
+// Validate performs validation of all configs inside list
+func (v validableAdapter) Validate() error {
+	if validable, ok := v.Configurer.(Validable); ok {
+		return validable.Validate()
+	}
+
+	return nil
+}

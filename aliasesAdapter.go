@@ -47,3 +47,12 @@ func (c ConfigurerWithAliases) UnmarshalKey(key string, target interface{}) erro
 func (c ConfigurerWithAliases) KeyFunc(key string) func(interface{}) error {
 	return ExtractUnmarshalFunc(c, key)
 }
+
+// Validate performs validation of all configs inside list
+func (c ConfigurerWithAliases) Validate() error {
+	if validable, ok := c.real.(Validable); ok {
+		return validable.Validate()
+	}
+
+	return nil
+}
