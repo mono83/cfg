@@ -17,6 +17,16 @@ func New() *Config {
 	}
 }
 
+// OrDefault methods checks argument and returns default global
+// configurer if provided one is null
+func OrDefault(c cfg.Configurer) cfg.Configurer {
+	if c == nil {
+		return def
+	}
+
+	return c
+}
+
 // Config is helper configuration structure
 type Config struct {
 	configs        []cfg.Configurer
