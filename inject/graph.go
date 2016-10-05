@@ -128,9 +128,9 @@ func (f *failsafeGetter) cp() {
 	s := reflect.TypeOf(f.source)
 	t := reflect.TypeOf(f.target)
 	if t.Kind() != reflect.Ptr {
-		f.err = fmt.Errorf("Target must be pointer, %T provided", f.target)
-	} else if s.Kind() == reflect.Ptr && t.Elem().Kind() != reflect.Ptr {
-		f.err = fmt.Errorf("Source is pointer, so target must be pointer to pointer, %T provided", f.target)
+		f.err = fmt.Errorf("Error copying service %s - target must be pointer, %T provided", f.name, f.target)
+	} else if s.Kind() == reflect.Ptr && t.Elem().Kind() != reflect.Ptr && t.Elem().Kind() != reflect.Interface {
+		f.err = fmt.Errorf("Error copying service %s - source is pointer, so target must be pointer to pointer, %T provided", f.name, f.target)
 	} else {
 		reflect.ValueOf(f.target).Elem().Set(reflect.ValueOf(f.source))
 	}
