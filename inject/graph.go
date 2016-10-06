@@ -17,6 +17,11 @@ type graph struct {
 
 // NewGraph builds new graph DI container
 func NewGraph(c cfg.Configurer) Container {
+	if c == nil {
+		// Providing empty configurer on nil
+		c = cfg.Map(map[string]interface{}{})
+	}
+
 	return &graph{
 		Configurer:     c,
 		services:       map[string]interface{}{},
