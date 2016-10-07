@@ -14,13 +14,9 @@ type Container interface {
 	HasService(name string) bool
 	// GetService searches for service by name and writes it into target
 	GetService(name string, target interface{}) error
-	// GetServices handles multiple service retrieval request
-	GetServices(defs ...Definition) error
 	// Define defines new service with build function for it
 	Define(name string, build func(Container) (interface{}, error))
 
 	// MustGetService is alias for GetService, that panics on error
 	MustGetService(name string, target interface{})
-	// MustGetServices is alias for GetServices, that panics on error
-	MustGetServices(defs ...Definition)
 }

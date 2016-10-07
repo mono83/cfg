@@ -1,5 +1,16 @@
 package inject
 
+// GetServices handles multiple service retrieval request
+func GetServices(from Container, defs ...Definition) error {
+	for _, def := range defs {
+		if err := from.GetService(def.Name(), def.Target()); err != nil {
+			return err
+		}
+	}
+
+	return nil
+}
+
 // Definition describes service request definition
 type Definition interface {
 	Name() string

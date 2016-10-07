@@ -94,23 +94,6 @@ func (g *graph) MustGetService(name string, target interface{}) {
 	}
 }
 
-func (g *graph) MustGetServices(defs ...Definition) {
-	err := g.GetServices(defs...)
-	if err != nil {
-		panic(err)
-	}
-}
-
-func (g *graph) GetServices(defs ...Definition) error {
-	for _, def := range defs {
-		if err := g.GetService(def.Name(), def.Target()); err != nil {
-			return err
-		}
-	}
-
-	return nil
-}
-
 func (g *graph) Define(name string, build func(Container) (interface{}, error)) {
 	g.buildFunctions[name] = build
 }
