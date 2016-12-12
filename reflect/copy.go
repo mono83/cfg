@@ -129,5 +129,31 @@ func smartStringCopy(from, to interface{}) (bool, error) {
 		return true, nil
 	}
 
+	if typeOfTo == reflect.Float32 {
+		f, err := strconv.ParseFloat(sv, 32)
+		if err != nil {
+			return false, fmt.Errorf(
+				"Unable to map string to float32. %s",
+				err.Error(),
+			)
+		}
+
+		valPoint.SetFloat(f)
+		return true, nil
+	}
+
+	if typeOfTo == reflect.Float64 {
+		f, err := strconv.ParseFloat(sv, 64)
+		if err != nil {
+			return false, fmt.Errorf(
+				"Unable to map string to float64. %s",
+				err.Error(),
+			)
+		}
+
+		valPoint.SetFloat(f)
+		return true, nil
+	}
+
 	return false, nil
 }
